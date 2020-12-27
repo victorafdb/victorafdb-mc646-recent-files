@@ -18,6 +18,9 @@ class File:
 
 class RecentFiles:
     def __init__(self, capacity):
+        if capacity < 1:
+            raise ValueError(
+                "RecentFiles storage capacity must be greater than 1")
         self.capacity = capacity
         self.load = 0
 

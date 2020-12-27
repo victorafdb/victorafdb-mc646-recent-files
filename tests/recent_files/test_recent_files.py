@@ -1,5 +1,7 @@
 import sys
-sys.path.insert(1,'/Users/victorf/Documents/unicamp/MC646/TDD/recent-files/src')
+import pytest
+sys.path.insert(
+    1, '/Users/victorf/Documents/unicamp/MC646/TDD/recent-files/src')
 
 from recent_files import RecentFiles
 
@@ -11,10 +13,17 @@ from recent_files import RecentFiles
 # - A atualização da lista pode ser desabilitada/habilitada. Caso seja desabilitada, os arquivos já existentes ficarão na lista, mas não serão adicionados novos arquivos.
 
 # Recent Files list is empty on init
+
 def test_recent_files_initialization():
     recent_files = RecentFiles(10)
     assert recent_files.capacity == 10
     assert recent_files.load == 0
+
+
+def test_recent_files_initialization_forbidden_capacity():
+    with pytest.raises(ValueError):
+        recent_files = RecentFiles(-1)
+
 
 # Opening files
 
