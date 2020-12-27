@@ -18,15 +18,6 @@ class File:
 
 class RecentFiles:
     def __init__(self, capacity):
-        self.current_load = 0
-        self.capacity = capacity
-
+        pass
     def is_full(self):
         pass
-
-def main():
-    print("Hello World")
-
-
-if __name__ == "__main__":
-    main()
