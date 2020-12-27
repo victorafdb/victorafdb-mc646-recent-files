@@ -3,7 +3,7 @@ import pytest
 sys.path.insert(
     1, '/Users/victorf/Documents/unicamp/MC646/TDD/recent-files/src')
 
-from recent_files import RecentFiles
+from recent_files import RecentFiles, File
 
 # - Quando o programa está executando pela primeira vez, essa lista está vazia;
 # - Quando um arquivo é aberto, ele é adicionado à lista de arquivos recentes;
@@ -26,6 +26,12 @@ def test_recent_files_initialization_forbidden_capacity():
 
 
 # Opening files
+def test_recent_files_register_new_file_success():
+    recent_files = RecentFiles(10)
+    opened_file = File("file1.txt", "This is file 1")
+    recent_files.register_file(opened_file)
+    assert recent_files.load == 1
+    assert recent_files.getFileByPath(opened_file.path).content == opened_file.content
 
 # Flushing Recent Files
 
