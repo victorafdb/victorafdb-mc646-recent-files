@@ -24,6 +24,7 @@ class RecentFiles:
         self.capacity = capacity
         self.load = 0
         self.head = None
+        self.blocked = False
 
     def is_full(self):
         if self.load == self.capacity:
@@ -77,6 +78,11 @@ class RecentFiles:
 
     def register_file(self, opened_file):
 
+        # Check if Register file is blocked:
+        if self.blocked:
+            raise Exception("RecentFiles storage is blocked")
+            return
+
         # If storage is full, remove oldest item and add the new one
         if self.is_full() is True:
             self.remove_oldest_file()
@@ -94,3 +100,13 @@ class RecentFiles:
             self.append_head(opened_file)
             self.load += 1
             return
+
+    def flush(self):
+        self.load = 0
+        self.head = None
+
+    def block(self):
+        self.blocked = True
+
+    def unblock(self):
+        self.blocked = False

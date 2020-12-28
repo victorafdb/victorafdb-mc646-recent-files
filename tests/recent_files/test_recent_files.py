@@ -16,7 +16,6 @@ from recent_files import RecentFiles, File
 
 # Recent Files list is empty on init
 
-
 def test_recent_files_initialization():
     recent_files = RecentFiles(10)
     assert recent_files.capacity == 10
@@ -109,9 +108,9 @@ def test_recent_files_flush():
     assert recent_files.load == 0
 
     assert recent_files.searchForFileByPath(
-        opened_file.path).content is None
+        opened_file.path) is None
     assert recent_files.searchForFileByPath(
-        opened_file2.path).content is None
+        opened_file2.path) is None
 
 # Blocking/Unblocking
 
@@ -124,7 +123,7 @@ def test_recent_files_block():
 
     recent_files.block()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(Exception):
         recent_files.register_file(opened_file2)
 
         assert recent_files.load == 1
@@ -132,7 +131,7 @@ def test_recent_files_block():
         assert recent_files.searchForFileByPath(
             opened_file.path).content == opened_file.content
         assert recent_files.searchForFileByPath(
-            opened_file2.path).content is None
+            opened_file2.path) is None
 
 
 def test_recent_files_unblock():
@@ -143,7 +142,7 @@ def test_recent_files_unblock():
 
     recent_files.block()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(Exception):
         recent_files.register_file(opened_file2)
 
         assert recent_files.load == 1
@@ -151,8 +150,9 @@ def test_recent_files_unblock():
         assert recent_files.searchForFileByPath(
             opened_file.path).content == opened_file.content
         assert recent_files.searchForFileByPath(
-            opened_file2.path).content is None
+            opened_file2.path) is None
 
+        recent_files.unblock()
         recent_files.register_file(opened_file2)
 
         assert recent_files.load == 2
