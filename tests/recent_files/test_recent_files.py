@@ -14,6 +14,7 @@ from recent_files import RecentFiles, File
 
 # Recent Files list is empty on init
 
+
 def test_recent_files_initialization():
     recent_files = RecentFiles(10)
     assert recent_files.capacity == 10
@@ -31,7 +32,8 @@ def test_recent_files_register_new_file_success():
     opened_file = File("file1.txt", "This is file 1")
     recent_files.register_file(opened_file)
     assert recent_files.load == 1
-    assert recent_files.getFileByPath(opened_file.path).content == opened_file.content
+    assert recent_files.searchForFileByPath(
+        opened_file.path).content == opened_file.content
 
 # Flushing Recent Files
 

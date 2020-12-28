@@ -23,6 +23,32 @@ class RecentFiles:
                 "RecentFiles storage capacity must be > 1")
         self.capacity = capacity
         self.load = 0
+        self.head = None
 
     def is_full(self):
         return self.load == self.capacity
+
+    def searchForFileByPath(self, path):
+        current = self.head
+        while current:
+            if current.path == path:
+                return current
+        return None
+
+    def register_file(self, opened_file):
+        file_exists = self.searchForFileByPath(opened_file.path)
+        if file_exists is not None:
+            opened_file.next = self.head
+            self.head = opened_file
+        else:
+            current = self.head
+
+            if current is None:
+                self.head = opened_file
+            else:
+                while current.next:
+                    current = current.next
+                current.next = opened_file
+
+            self.load += 1
+            return
