@@ -29,7 +29,7 @@ def test_recent_files_initialization_forbidden_capacity():
 # Opening files
 def test_recent_files_register_new_file_success():
     recent_files = RecentFiles(10)
-    opened_file = File("file1.txt", "This is file 1")
+    opened_file = File("file1.txt", "This is file one")
     recent_files.register_file(opened_file)
     assert recent_files.load == 1
     assert recent_files.searchForFileByPath(
