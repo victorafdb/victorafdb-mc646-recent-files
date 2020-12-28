@@ -1,3 +1,4 @@
+
 import sys
 import pytest
 sys.path.insert(
@@ -96,6 +97,65 @@ def test_recent_files_register_over_limit():
 
 # Flushing Recent Files
 
-# Blocking
 
-# Unblocking
+def test_recent_files_flush():
+    recent_files = RecentFiles(10)
+    opened_file = File("file1.txt", "This is file 1")
+    opened_file2 = File("file2.txt", "This is file 2")
+    recent_files.register_file(opened_file)
+    recent_files.register_file(opened_file2)
+
+    recent_files.flush()
+    assert recent_files.load == 0
+
+    assert recent_files.searchForFileByPath(
+        opened_file.path).content is None
+    assert recent_files.searchForFileByPath(
+        opened_file2.path).content is None
+
+# Blocking/Unblocking
+
+
+def test_recent_files_block():
+    recent_files = RecentFiles(10)
+    opened_file = File("file1.txt", "This is file 1")
+    opened_file2 = File("file2.txt", "This is file 2")
+    recent_files.register_file(opened_file)
+
+    recent_files.block()
+
+    with pytest.raises(ValueError):
+        recent_files.register_file(opened_file2)
+
+        assert recent_files.load == 1
+
+        assert recent_files.searchForFileByPath(
+            opened_file.path).content == opened_file.content
+        assert recent_files.searchForFileByPath(
+            opened_file2.path).content is None
+
+
+def test_recent_files_unblock():
+    recent_files = RecentFiles(10)
+    opened_file = File("file1.txt", "This is file 1")
+    opened_file2 = File("file2.txt", "This is file 2")
+    recent_files.register_file(opened_file)
+
+    recent_files.block()
+
+    with pytest.raises(ValueError):
+        recent_files.register_file(opened_file2)
+
+        assert recent_files.load == 1
+
+        assert recent_files.searchForFileByPath(
+            opened_file.path).content == opened_file.content
+        assert recent_files.searchForFileByPath(
+            opened_file2.path).content is None
+
+        recent_files.register_file(opened_file2)
+
+        assert recent_files.load == 2
+
+        assert recent_files.searchForFileByPath(
+            opened_file2.path).content == opened_file2.content
